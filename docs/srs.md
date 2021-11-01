@@ -37,11 +37,10 @@ An issue should contain the following data elements.
 1. ID - An internal database ID and an easy to read, autoincrementing ID.
 2. Title - A descriptive short name for the issue.
 3. Description - Relevant data pertaining to the issue.
-4. State - The state of the issue such as new, grooming, in progress, merged, etc.
-5. Priority - A scale of 1 to 5 to be able to show/sort by priority.
-6. Created - created timestamp
-7. Updated - last modified timestamp
-8. Deleted - deleted timestamp if not null
+4. Priority - A scale of 1 to 5 to be able to show/sort by priority.
+5. Created - created timestamp
+6. Updated - last modified timestamp
+7. Deleted - deleted timestamp if not null
 
 ## Non-Functional Requirements
 
@@ -52,6 +51,8 @@ must be able to handle all of the updates/deletes.
 
 While I don't know when, if any, of these features will be added, other ideas that come to mind are:
 
+* state - Add state to each issue such as new, resolved, in progress, etc.
+* authentication - track who changes the issues.
 * issue pagination - support a pagination model when there are multiple pages of issues.
 * projects - split into multiple projects instead of 1 issue tracker.
 * tagging - support tags such as `API`, `mobile`, etc. added to each issue.
