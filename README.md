@@ -12,4 +12,3 @@ Here is a list and links to the documents and a short description.
 
 1. [SRS](docs/srs.md) - Software requirements for the system. The what needs to be built and definition of done.
 2. [SAD](docs/sad.md) - Software architecture for the system. How the system gets built.
-3. [roadmap](docs/roadmap.md) - A roadmap of potential new features/ideas.
