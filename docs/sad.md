@@ -65,8 +65,9 @@ This also shows the how the decision for Cosmos was made. The use of the change 
 manage asynchronous messaging without having to create more infrastructure in a messaging bus nor 
 implement transactional outboxes, etc.
 
-Azure Functions are being chosen for 2 reasons.
+Azure Functions are being chosen for 3 reasons.
 
 1. I work with Azure Functions daily so it is my go to choice for development currently.
 2. If I do ever want to deploy this to Azure, I can use a consumption plan and keep the price down very 
 low.
+3. Azure Functions provides bindings for Cosmos to make this be possible in the least amount of code.
