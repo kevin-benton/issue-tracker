@@ -1,6 +1,7 @@
 using IssueTracker.Core.Domain.Issue.Events;
 using IssueTracker.Core.Domain.Issue.Exceptions;
 using IssueTracker.CQRS.Domain;
+using IssueTracker.CQRS.Events;
 
 namespace IssueTracker.Core.Domain.Issue.Models
 {
@@ -33,6 +34,18 @@ namespace IssueTracker.Core.Domain.Issue.Models
                 Description = description,
                 Priority = priority
             });
+        }
+
+        public string Title { get; set; } = string.Empty;
+        public string Description { get; set; } = string.Empty;
+        public int Priority { get; set; } = 5;
+
+        internal void Apply(IssueCreatedEvent @event)
+        {
+            Id = @event.AggregateId;
+            Title = @event.Title;
+            Description = @event.Description;
+            Priority = @event.Priority;
         }
     }
 }

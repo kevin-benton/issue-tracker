@@ -1,8 +1,13 @@
 using System;
+using System.Collections.Generic;
+
+using MediatR;
+
+using IssueTracker.CQRS.Events;
 
 namespace IssueTracker.CQRS.Commands
 {
-    public interface ICommand
+    public interface ICommand : IRequest<IEnumerable<IEvent>>
     {
         string Id { get; set; }
         string AggregateId { get; set; }

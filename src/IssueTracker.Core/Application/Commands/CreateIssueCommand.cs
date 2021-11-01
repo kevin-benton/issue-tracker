@@ -1,5 +1,12 @@
+using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
+
 using FluentValidation;
+
+using IssueTracker.Core.Domain.Issue.Models;
 using IssueTracker.CQRS.Commands;
+using IssueTracker.CQRS.Events;
 
 namespace IssueTracker.Core.Application.Commands
 {
@@ -17,6 +24,15 @@ namespace IssueTracker.Core.Application.Commands
             RuleFor(x => x.Title).NotEmpty();
             RuleFor(x => x.Description).NotEmpty();
             RuleFor(x => x.Priority).InclusiveBetween(1, 5);
+        }
+    }
+
+    public sealed class CreateIssueCommandHandler : ICommandHandler<CreateIssueCommand>
+    {
+        public async Task<IEnumerable<IEvent>> Handle(CreateIssueCommand request, CancellationToken cancellationToken)
+        {
+            var issue = new IssueAggregate(request.AggregateId, request.Title, request.Description, request.Priority);
+            return await Task.FromResult(issue.Events);
         }
     }
 }

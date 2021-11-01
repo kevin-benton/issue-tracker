@@ -13,7 +13,6 @@ An issue will be defined with the following JSON structure.
   "id": 0,
   "title": "",
   "description": "",
-  "state": "",
   "priority": 0,
   "created": "timestamp",
   "updated": "timestamp",

@@ -1,10 +1,12 @@
 using System;
 
+using MediatR;
+
 using IssueTracker.CQRS.Commands;
 
 namespace IssueTracker.CQRS.Events
 {
-    public interface IEvent
+    public interface IEvent : INotification
     {
         string Id { get; set; }
         string AggregateId { get; set; }

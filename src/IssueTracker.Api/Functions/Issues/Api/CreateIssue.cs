@@ -2,7 +2,7 @@ using System;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
-
+using System.Web.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
@@ -45,7 +45,8 @@ namespace IssueTracker.Api.Functions.Issues.Api
                 _logger.LogInformation("Creating new issue.");
 
                 string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
-                var command = JsonConvert.DeserializeObject<CreateIssueCommand>(requestBody) ?? new CreateIssueCommand();
+                var command = JsonConvert.DeserializeObject<CreateIssueCommand>(requestBody) ??
+                              new CreateIssueCommand();
 
                 var validationResult = await _validator.ValidateAsync(command, cancellationToken);
 
@@ -54,9 +55,14 @@ namespace IssueTracker.Api.Functions.Issues.Api
                     return new BadRequestObjectResult(validationResult);
                 }
 
+                command.AggregateId = Guid.NewGuid().ToString();
                 await commands.AddAsync(_commandDocumentFactory.CreateCommand(command), cancellationToken);
 
                 return new CreatedResult(string.Empty, null);
+            }
+            catch (Newtonsoft.Json.JsonReaderException)
+            {
+                return new BadRequestErrorMessageResult("Unable to parse body.");
             }
             catch (Exception ex)
             {
