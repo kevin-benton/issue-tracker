@@ -83,6 +83,11 @@ namespace IssueTracker.Core.Domain.Issue.Models
             });
         }
 
+        public void Delete()
+        {
+            AddAndApplyEvent(new IssueDeletedEvent(Id));
+        }
+
         internal void Apply(IssueCreatedEvent @event)
         {
             Id = @event.AggregateId;
@@ -107,6 +112,12 @@ namespace IssueTracker.Core.Domain.Issue.Models
         {
             Priority = @event.Priority;
             Updated = @event.Created;
+        }
+
+        internal void Apply(IssueDeletedEvent @event)
+        {
+            Updated = @event.Created;
+            Deleted = @event.Created;
         }
     }
 }
