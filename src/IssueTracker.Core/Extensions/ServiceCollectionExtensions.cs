@@ -11,6 +11,7 @@ using FluentValidation;
 
 using IssueTracker.Core.Application.Commands;
 using IssueTracker.Core.Domain.Issue.Events;
+using IssueTracker.Core.Domain.Issue.Models;
 using IssueTracker.Core.Domain.Issue.ReadModel;
 using IssueTracker.Core.Settings;
 using IssueTracker.CQRS.Extensions;
@@ -31,6 +32,7 @@ namespace IssueTracker.Core.Extensions
             });
 
             services.AddTransient<IValidator<CreateIssueCommand>, CreateIssueCommandValidator>();
+            services.AddTransient<IValidator<UpdateIssueCommand>, UpdateIssueCommandValidator>();
 
             services.AddOptions<CosmosConfig>()
                 .Configure<IConfiguration>((settings, configuration) =>
@@ -56,6 +58,7 @@ namespace IssueTracker.Core.Extensions
             });
 
             services.AddScoped<IIssueRepository, IssueRepository>();
+            services.AddScoped<IIssueAggregateRepository, IssueAggregateRepository>();
         }
     }
 }
