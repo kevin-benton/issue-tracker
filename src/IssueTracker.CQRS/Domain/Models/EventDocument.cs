@@ -15,9 +15,6 @@ namespace IssueTracker.CQRS.Domain.Models
         [JsonProperty(PropertyName = "commandId")]
         public string CommandId { get; set; } = string.Empty;
 
-        [JsonProperty(PropertyName = "sequence")]
-        public int Sequence { get; set; }
-
         [JsonProperty(PropertyName = "type")]
         public string Type { get; set; } = string.Empty;
 
