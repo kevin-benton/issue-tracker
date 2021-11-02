@@ -18,13 +18,13 @@ using IssueTracker.CQRS.Domain.Models.Factories;
 
 namespace IssueTracker.Api.Functions.Issues.Api
 {
-    public class CreateIssue
+    public class UpdateIssue
     {
         private readonly ILogger _logger;
-        private readonly IValidator<CreateIssueCommand> _validator;
+        private readonly IValidator<UpdateIssueCommand> _validator;
         private readonly ICommandDocumentFactory _commandDocumentFactory;
 
-        public CreateIssue(ILoggerFactory loggerFactory, IValidator<CreateIssueCommand> validator,
+        public UpdateIssue(ILoggerFactory loggerFactory, IValidator<UpdateIssueCommand> validator,
             ICommandDocumentFactory commandDocumentFactory)
         {
             _logger = loggerFactory.CreateLogger(nameof(IssueTracker));
@@ -32,21 +32,22 @@ namespace IssueTracker.Api.Functions.Issues.Api
             _commandDocumentFactory = commandDocumentFactory;
         }
 
-        [FunctionName(nameof(CreateIssue))]
+        [FunctionName(nameof(UpdateIssue))]
         public async Task<IActionResult> RunAsync(
-            [HttpTrigger(AuthorizationLevel.Function, "post", Route = "issues")]
+            [HttpTrigger(AuthorizationLevel.Function, "put", Route = "issues/{id}")]
             HttpRequest req,
             [CosmosDB("%CosmosConfig:DatabaseName%", "commands-col", ConnectionStringSetting = "CosmosConfig:ConnectionString")]
             IAsyncCollector<CommandDocument> commands,
+            string id,
             CancellationToken cancellationToken)
         {
             try
             {
-                _logger.LogInformation("Creating new issue.");
+                _logger.LogInformation("Updating issue.");
 
                 string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
-                var command = JsonConvert.DeserializeObject<CreateIssueCommand>(requestBody) ??
-                              new CreateIssueCommand();
+                var command = JsonConvert.DeserializeObject<UpdateIssueCommand>(requestBody) ??
+                              new UpdateIssueCommand();
 
                 var validationResult = await _validator.ValidateAsync(command, cancellationToken);
 
@@ -55,10 +56,10 @@ namespace IssueTracker.Api.Functions.Issues.Api
                     return new BadRequestObjectResult(validationResult);
                 }
 
-                command.AggregateId = Guid.NewGuid().ToString();
+                command.AggregateId = id;
                 await commands.AddAsync(_commandDocumentFactory.CreateCommand(command), cancellationToken);
 
-                return new CreatedResult(string.Empty, null);
+                return new OkResult();
             }
             catch (JsonReaderException)
             {

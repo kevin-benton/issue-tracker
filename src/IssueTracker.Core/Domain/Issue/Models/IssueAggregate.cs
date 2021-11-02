@@ -44,12 +44,69 @@ namespace IssueTracker.Core.Domain.Issue.Models
         public DateTime Updated { get; set; } = DateTime.UtcNow;
         public DateTime? Deleted { get; set; }
 
+        public void SetTitle(string title)
+        {
+            if (Title == title)
+            {
+                return;
+            }
+
+            AddAndApplyEvent(new TitleModifiedEvent(Id)
+            {
+                Title = title
+            });
+        }
+
+        public void SetDescription(string description)
+        {
+            if (Description == description)
+            {
+                return;
+            }
+
+            AddAndApplyEvent(new DescriptionModifiedEvent(Id)
+            {
+                Description = description
+            });
+        }
+
+        public void SetPriority(int priority)
+        {
+            if (Priority == priority)
+            {
+                return;
+            }
+
+            AddAndApplyEvent(new PriorityModifiedEvent(Id)
+            {
+                Priority = priority
+            });
+        }
+
         internal void Apply(IssueCreatedEvent @event)
         {
             Id = @event.AggregateId;
             Title = @event.Title;
             Description = @event.Description;
             Priority = @event.Priority;
+        }
+
+        internal void Apply(TitleModifiedEvent @event)
+        {
+            Title = @event.Title;
+            Updated = @event.Created;
+        }
+
+        internal void Apply(DescriptionModifiedEvent @event)
+        {
+            Description = @event.Description;
+            Updated = @event.Created;
+        }
+
+        internal void Apply(PriorityModifiedEvent @event)
+        {
+            Priority = @event.Priority;
+            Updated = @event.Created;
         }
     }
 }
