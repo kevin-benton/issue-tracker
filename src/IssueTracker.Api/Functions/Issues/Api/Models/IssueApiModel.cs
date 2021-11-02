@@ -1,6 +1,9 @@
 using System;
+using System.Collections.Generic;
 
 using Newtonsoft.Json;
+
+using IssueTracker.CQRS.Events;
 
 namespace IssueTracker.Api.Functions.Issues.Api.Models
 {
@@ -20,5 +23,17 @@ namespace IssueTracker.Api.Functions.Issues.Api.Models
 
         [JsonProperty(PropertyName = "priority")]
         public int Priority { get; set; } = 5;
+
+        [JsonProperty(PropertyName = "created")]
+        public DateTime Created { get; set; } = DateTime.UtcNow;
+
+        [JsonProperty(PropertyName = "updated")]
+        public DateTime Updated { get; set; } = DateTime.UtcNow;
+
+        [JsonProperty(PropertyName = "deleted")]
+        public DateTime? Deleted { get; set; }
+
+        [JsonProperty(PropertyName = "history")]
+        public List<Event> History { get; set; } = new List<Event>();
     }
 }

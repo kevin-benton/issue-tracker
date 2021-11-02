@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -37,7 +38,13 @@ namespace IssueTracker.Core.Domain.Issue.Events
                 IssueId = (totalCount + 1).ToString(),
                 Title = notification.Title,
                 Description = notification.Description,
-                Priority = notification.Priority
+                Priority = notification.Priority,
+                Created = notification.Created,
+                Updated = notification.Created,
+                History = new List<Event>
+                {
+                    notification
+                }
             }, cancellationToken);
         }
     }

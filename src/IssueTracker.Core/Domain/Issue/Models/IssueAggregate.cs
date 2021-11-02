@@ -1,7 +1,8 @@
+using System;
+
 using IssueTracker.Core.Domain.Issue.Events;
 using IssueTracker.Core.Domain.Issue.Exceptions;
 using IssueTracker.CQRS.Domain;
-using IssueTracker.CQRS.Events;
 
 namespace IssueTracker.Core.Domain.Issue.Models
 {
@@ -39,6 +40,9 @@ namespace IssueTracker.Core.Domain.Issue.Models
         public string Title { get; set; } = string.Empty;
         public string Description { get; set; } = string.Empty;
         public int Priority { get; set; } = 5;
+        public DateTime Created { get; set; } = DateTime.UtcNow;
+        public DateTime Updated { get; set; } = DateTime.UtcNow;
+        public DateTime? Deleted { get; set; }
 
         internal void Apply(IssueCreatedEvent @event)
         {
