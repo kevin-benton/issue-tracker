@@ -51,6 +51,8 @@ must be able to handle all of the updates/deletes.
 
 While I don't know when, if any, of these features will be added, other ideas that come to mind are:
 
+* testing - While this should be a part of the MVP, I want to add more automated unit and integration 
+  tests.
 * state - Add state to each issue such as new, resolved, in progress, etc.
 * authentication - track who changes the issues.
 * issue pagination - support a pagination model when there are multiple pages of issues.
