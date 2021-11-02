@@ -31,6 +31,7 @@ namespace IssueTracker.Core.Domain.Issue.Events
             var issue = await _issues.GetAsync(notification.AggregateId, cancellationToken);
 
             issue.Priority = notification.Priority;
+            issue.Updated = notification.Created;
             issue.History.Add(notification);
             issue.History = issue.History.OrderBy(e => e.Created).ToList();
 

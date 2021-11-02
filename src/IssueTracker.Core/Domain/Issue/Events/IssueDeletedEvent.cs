@@ -7,31 +7,29 @@ using IssueTracker.CQRS.Events;
 
 namespace IssueTracker.Core.Domain.Issue.Events
 {
-    public sealed class TitleModifiedEvent : Event
+    public sealed class IssueDeletedEvent : Event
     {
-        public TitleModifiedEvent(string id)
+        public IssueDeletedEvent(string id)
         {
             AggregateId = id;
         }
-
-        public string Title { get; set; } = string.Empty;
     }
 
-    public sealed class TitleModifiedEventHandler : IEventHandler<TitleModifiedEvent>
+    public sealed class IssueDeletedEventHandler : IEventHandler<IssueDeletedEvent>
     {
         private readonly IIssueRepository _issues;
 
-        public TitleModifiedEventHandler(IIssueRepository issues)
+        public IssueDeletedEventHandler(IIssueRepository issues)
         {
             _issues = issues;
         }
 
-        public async Task Handle(TitleModifiedEvent notification, CancellationToken cancellationToken)
+        public async Task Handle(IssueDeletedEvent notification, CancellationToken cancellationToken)
         {
             var issue = await _issues.GetAsync(notification.AggregateId, cancellationToken);
 
-            issue.Title = notification.Title;
             issue.Updated = notification.Created;
+            issue.Deleted = notification.Created;
             issue.History.Add(notification);
             issue.History = issue.History.OrderBy(e => e.Created).ToList();
 
